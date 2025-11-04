@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  flask-app:
+    build: ./flask-app
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
+  node-app:
+    build: ./node-app
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+  spring-app:
+    build: ./spring-app
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+  go-app:
+    build: ./go-app
+    ports:
+      - "8082:8080"
+    restart: unless-stopped
+  react-app:
+    build: ./react-app
+    ports:
+      - "8081:80"
+    restart: unless-stopped
+  html-site:
+    build: ./html-site
+    ports:
+      - "8083:80"
+    restart: unless-stopped
