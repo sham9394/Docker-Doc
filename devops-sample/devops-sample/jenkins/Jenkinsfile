@@ -1,0 +1,45 @@
+pipeline {
+  agent any
+  environment {
+    DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds')
+    KUBECONFIG_CREDENTIALS = credentials('kubeconfig')
+    IMAGE = "shamchaudhari/devops-sample:1.0:${env.BUILD_NUMBER}"
+  }
+  stages {
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
+    }
+    stage('Build Docker Image') {
+      steps {
+        sh "docker build -f docker/Dockerfile -t $IMAGE ."
+      }
+    }
+    stage('Login & Push') {
+      steps {
+        sh '''
+          echo "${DOCKERHUB_CREDENTIALS_PSW}" | docker login -u "${DOCKERHUB_CREDENTIALS_USR}" --password-stdin
+          docker push $IMAGE
+        '''
+      }
+    }
+    stage('Deploy to Kubernetes') {
+      steps {
+        withCredentials([file(credentialsId: 'kubeconfig-file', variable: 'KUBECONFIG_FILE')]) {
+          sh 'export KUBECONFIG=${KUBECONFIG_FILE}'
+          sh "kubectl set image deployment/devops-sample-deployment devops-sample=$IMAGE --record || true"
+          sh "kubectl rollout status deployment/devops-sample-deployment --timeout=120s || true"
+        }
+      }
+    }
+  }
+  post {
+    success {
+      echo "Pipeline success: $IMAGE"
+    }
+    failure {
+      echo "Pipeline failed"
+    }
+  }
+}
