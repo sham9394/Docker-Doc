@@ -1,0 +1,1 @@
+Node Express app. Build with `docker build -t node-app .` and run.

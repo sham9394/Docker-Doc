@@ -1,0 +1,1 @@
+Go app. Build with `docker build -t go-app .` and run.

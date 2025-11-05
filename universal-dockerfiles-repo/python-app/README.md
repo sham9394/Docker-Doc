@@ -1,0 +1,1 @@
+Python Flask app. Build with `docker build -t python-app .` and run.

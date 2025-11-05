@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project: [python-app, node-app, go-app, java-app]
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up for ${{ matrix.project }}
+      run: |
+        echo "Building ${{ matrix.project }}"
+    - name: Build Docker image
+      run: |
+        cd ${{ matrix.project }}
+        docker build -t ${{ matrix.project }}:ci .

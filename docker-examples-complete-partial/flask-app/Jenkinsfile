@@ -1,0 +1,15 @@
+pipeline {
+  agent any
+  environment {
+    IMAGE = "flask-app:latest"
+  }
+  stages {
+    stage('Checkout') { steps { checkout scm } }
+    stage('Test') { steps { sh "pytest -q" } }
+    stage('Build') { steps { sh 'docker build -t $IMAGE .' } }
+    stage('Publish') { steps { echo 'Push to registry (configure credentials)' } }
+  }
+  post {
+    always { archiveArtifacts artifacts: '**/target/**, **/build/**', allowEmptyArchive: true }
+  }
+}

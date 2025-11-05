@@ -1,0 +1,1 @@
+Java Spring Boot app. Build with `docker build -t java-app .` and run.

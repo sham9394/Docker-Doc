@@ -1,0 +1,19 @@
+package com.example;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@SpringBootApplication
+public class Application {
+    public static void main(String[] args) { SpringApplication.run(Application.class, args); }
+}
+
+@RestController
+class HomeController {
+    @GetMapping("/")
+    public java.util.Map<String,String> index() { return java.util.Map.of("message","Hello from Java"); }
+    @GetMapping("/actuator/health")
+    public String health() { return "UP"; }
+}

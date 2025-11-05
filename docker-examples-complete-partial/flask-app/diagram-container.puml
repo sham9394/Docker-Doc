@@ -1,0 +1,9 @@
+@startuml
+title Container Diagram - flask-app
+container flask-app {
+  [App]
+  [NGINX]
+  [Redis]
+  [Postgres]
+}
+@enduml

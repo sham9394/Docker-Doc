@@ -1,0 +1,9 @@
+@startuml
+title System Architecture - flask-app
+actor User
+node "Browser / Client" as client
+node "flask-app Service" as service
+database "Database" as db
+client -> service : HTTP Request
+service -> db : Read/Write
+@enduml
